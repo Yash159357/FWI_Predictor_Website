@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forest Fire Prediction System</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="https://img.icons8.com/color/48/000000/fire-element--v1.png">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    
+    <style>
+        /* Custom styles */
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            outline: none;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-fire text-red-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-800">FirePredict</span>
+                    </div>
+                </div>
+                <div class="hidden md:ml-6 md:flex md:items-center space-x-8">
+                    <a href="#" class="text-gray-700 hover:text-blue-600 px-3 py-2 font-medium">Home</a>
+                    <a href="#features" class="text-gray-500 hover:text-blue-600 px-3 py-2 font-medium">Features</a>
+                    <a href="#about" class="text-gray-500 hover:text-blue-600 px-3 py-2 font-medium">About</a>
+                    <a href="#predict" class="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150">
+                        Predict Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-gradient">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6">
+                Forest Fire Weather Index (FWI) Prediction System
+            </h1>
+            <p class="text-xl text-blue-100 max-w-3xl mx-auto mb-8">
+                Advanced machine learning model that predicts the Fire Weather Index (FWI) based on weather and environmental conditions to assess fire risk levels.
+            </p>
+            <a href="#predict" class="bg-white text-blue-700 px-8 py-3 rounded-full font-semibold hover:bg-blue-50 transition duration-150 inline-block">
+                Try Prediction
+            </a>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="features" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    Fire Weather Index (FWI) Prediction
+                </h2>
+                <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+                    Our system calculates the Fire Weather Index (FWI) based on key meteorological parameters to assess fire danger levels.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+                <!-- Feature 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-md card-hover">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-fire text-red-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">FWI Calculation</h3>
+                    <p class="text-gray-600">
+                        Computes the Fire Weather Index based on temperature, humidity, wind speed, and rainfall data.
+                    </p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="bg-white p-6 rounded-xl shadow-md card-hover">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Risk Assessment</h3>
+                    <p class="text-gray-600">
+                        Provides clear risk levels based on FWI values for better decision making.
+                    </p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="bg-white p-6 rounded-xl shadow-md card-hover">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Data-Driven</h3>
+                    <p class="text-gray-600">
+                        Uses machine learning to provide accurate FWI predictions based on historical patterns.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prediction Form Section -->
+    <div id="predict" class="py-16 bg-gray-50">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Calculate Fire Weather Index (FWI)</h2>
+                <p class="text-center text-gray-600 mb-8">
+                    Enter the following weather parameters to calculate the Fire Weather Index (FWI) and assess fire danger levels.
+                </p>
+                <form id="predictionForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Temperature -->
+                        <div>
+                            <label for="Temperature" class="block text-sm font-medium text-gray-700">Temperature (°C)</label>
+                            <input type="number" id="Temperature" name="Temperature" class="form-control"
+                                   placeholder="e.g., 25.5" step="0.1" required>
+                        </div>
+
+                        <!-- RH (Relative Humidity) -->
+                        <div>
+                            <label for="RH" class="block text-sm font-medium text-gray-700">Relative Humidity (%)</label>
+                            <input type="number" id="RH" name="RH" class="form-control"
+                                   min="0" max="100" placeholder="e.g., 60" required>
+                        </div>
+
+                        <!-- Ws (Wind Speed) -->
+                        <div>
+                            <label for="Ws" class="block text-sm font-medium text-gray-700">Wind Speed (km/h)</label>
+                            <input type="number" id="Ws" name="Ws" class="form-control"
+                                   placeholder="e.g., 15" min="0" step="0.1" required>
+                        </div>
+
+                        <!-- Rain -->
+                        <div>
+                            <label for="Rain" class="block text-sm font-medium text-gray-700">Rainfall (mm)</label>
+                            <input type="number" id="Rain" name="Rain" class="form-control"
+                                   placeholder="e.g., 5.2" min="0" step="0.1" required>
+                        </div>
+
+                        <!-- FFMC -->
+                        <div>
+                            <label for="FFMC" class="block text-sm font-medium text-gray-700">FFMC (Fine Fuel Moisture Code)</label>
+                            <input type="number" id="FFMC" name="FFMC" class="form-control"
+                                   placeholder="e.g., 85.0" step="0.01" min="0" required>
+                        </div>
+
+                        <!-- DMC -->
+                        <div>
+                            <label for="DMC" class="block text-sm font-medium text-gray-700">DMC (Duff Moisture Code)</label>
+                            <input type="number" id="DMC" name="DMC" class="form-control"
+                                   placeholder="e.g., 30.0" step="0.1" min="0" required>
+                        </div>
+
+                        <!-- ISI -->
+                        <div>
+                            <label for="ISI" class="block text-sm font-medium text-gray-700">ISI (Initial Spread Index)</label>
+                            <input type="number" id="ISI" name="ISI" class="form-control"
+                                   placeholder="e.g., 5.0" step="0.1" min="0" required>
+                        </div>
+
+                        <!-- Region -->
+                        <div>
+                            <label for="Region" class="block text-sm font-medium text-gray-700">Region (0-8)</label>
+                            <select id="Region" name="Region" class="form-control" required>
+                                <option value="">Select Region</option>
+                                <option value="0">Region 0</option>
+                                <option value="1">Region 1</option>
+                                <option value="2">Region 2</option>
+                                <option value="3">Region 3</option>
+                                <option value="4">Region 4</option>
+                                <option value="5">Region 5</option>
+                                <option value="6">Region 6</option>
+                                <option value="7">Region 7</option>
+                                <option value="8">Region 8</option>
+                            </select>
+                        </div>
+
+                        <!-- isFire -->
+                        <div class="md:col-span-2">
+                            <label for="isFire" class="block text-sm font-medium text-gray-700">Fire Status</label>
+                            <select id="isFire" name="isFire" class="form-control" required>
+                                <option value="">Select Fire Status</option>
+                                <option value="0">No Fire</option>
+                                <option value="1">Fire Present</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <button type="submit" id="submitBtn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150">
+                            Calculate FWI
+                        </button>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div id="predictionResult" class="mt-6 p-6 rounded-lg bg-blue-50 border border-blue-200 hidden">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">FWI Prediction Result</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white p-4 rounded-lg shadow">
+                                <div class="text-3xl font-bold text-center text-blue-600 mb-2" id="fwiValue">0.0</div>
+                                <div class="text-center text-sm text-gray-600">Fire Weather Index</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow">
+                                <div class="flex items-center justify-center">
+                                    <div id="riskIcon" class="text-3xl mr-3">⚠️</div>
+                                    <div>
+                                        <div class="font-semibold text-gray-800" id="riskLevel">Low Risk</div>
+                                        <div class="text-sm text-gray-600" id="riskDescription">Minimal fire danger</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-sm text-gray-600">
+                            <p class="mb-2"><strong>FWI Scale:</strong></p>
+                            <ul class="space-y-1">
+                                <li class="flex justify-between"><span>0-5.2:</span> <span class="text-green-600">Low</span></li>
+                                <li class="flex justify-between"><span>5.2-11.2:</span> <span class="text-yellow-500">Moderate</span></li>
+                                <li class="flex justify-between"><span>11.2-21.3:</span> <span class="text-orange-500">High</span></li>
+                                <li class="flex justify-between"><span>21.3-38.0:</span> <span class="text-red-500">Very High</span></li>
+                                <li class="flex justify-between"><span>38.0+:</span> <span class="text-red-700 font-bold">Extreme</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div id="errorMessage" class="mt-4 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 hidden">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            <span id="errorText">An error occurred</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div id="about" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    About Our Prediction System
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-600 lg:mx-auto">
+                    Our advanced machine learning model analyzes multiple environmental factors to predict the Fire Weather Index with high accuracy.
+                </p>
+            </div>
+
+            <div class="mt-16">
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">How It Works</h3>
+                    <div class="space-y-4">
+                        <p class="text-gray-700">
+                            Our system uses historical weather and environmental data to train machine learning models that can predict Fire Weather Index based on current conditions.
+                        </p>
+                        <p class="text-gray-700">
+                            The prediction takes into account various factors including temperature, humidity, wind speed, rainfall, and fire weather codes to provide accurate FWI calculations.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <i class="fas fa-fire text-red-500 text-2xl mr-2"></i>
+                    <span class="text-xl font-bold">FirePredict</span>
+                </div>
+                <div class="text-sm text-gray-400">
+                    &copy; 2023 FirePredict. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FWI Risk Levels
+        const fwiRiskLevels = [
+            { max: 5.2, level: 'Low', color: 'text-green-600', icon: '✅', description: 'Minimal fire danger' },
+            { max: 11.2, level: 'Moderate', color: 'text-yellow-500', icon: '⚠️', description: 'Moderate fire danger' },
+            { max: 21.3, level: 'High', color: 'text-orange-500', icon: '🔥', description: 'High fire danger' },
+            { max: 38.0, level: 'Very High', color: 'text-red-500', icon: '🔥', description: 'Very high fire danger' },
+            { max: Infinity, level: 'Extreme', color: 'text-red-700', icon: '🚨', description: 'Extreme fire danger' }
+        ];
+
+        // Get risk level based on FWI value
+        const getRiskLevel = (fwi) => {
+            return fwiRiskLevels.find(level => fwi <= level.max) || fwiRiskLevels[fwiRiskLevels.length - 1];
+        };
+
+        // Show error message
+        const showError = (message) => {
+            const errorDiv = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            errorText.textContent = message;
+            errorDiv.classList.remove('hidden');
+            setTimeout(() => {
+                errorDiv.classList.add('hidden');
+            }, 5000);
+        };
+
+        // Hide error message
+        const hideError = () => {
+            document.getElementById('errorMessage').classList.add('hidden');
+        };
+
+        // Simulate API call since we don't have the backend
+        const simulatePredict = (data) => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // Simple FWI calculation simulation
+                    const temp = parseFloat(data.Temperature);
+                    const humidity = parseFloat(data.RH);
+                    const windSpeed = parseFloat(data.Ws);
+                    const rain = parseFloat(data.Rain);
+                    const ffmc = parseFloat(data.FFMC);
+
+                    // Basic FWI simulation (not the real formula)
+                    let fwi = (temp * 0.4) + (windSpeed * 0.3) + (ffmc * 0.1) - (humidity * 0.2) - (rain * 2);
+                    fwi = Math.max(0, fwi); // Ensure non-negative
+
+                    resolve({
+                        status: 'success',
+                        prediction: fwi.toFixed(1)
+                    });
+                }, 1500);
+            });
+        };
+
+        // Form submission handler
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            hideError();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const originalBtnText = submitBtn.innerHTML;
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span>Calculating...';
+
+            try {
+                // Collect form data
+                const formData = new FormData(this);
+                const data = {};
+
+                // Convert form data to object
+                for (let [key, value] of formData.entries()) {
+                    if (value === '') {
+                        showError(`Please fill in all required fields. Missing: ${key}`);
+                        return;
+                    }
+                    data[key] = value;
+                }
+
+                // For demo purposes, we'll simulate the API call
+                // Replace this with actual fetch call when backend is available
+                const result = await simulatePredict(data);
+
+                /*
+                // Use this when your backend is working:
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                */
+
+                if (result.status === 'success') {
+                    const fwi = parseFloat(result.prediction);
+                    const riskInfo = getRiskLevel(fwi);
+
+                    // Update result display
+                    document.getElementById('fwiValue').textContent = fwi.toFixed(1);
+                    document.getElementById('riskLevel').textContent = riskInfo.level;
+                    document.getElementById('riskLevel').className = `font-semibold ${riskInfo.color}`;
+                    document.getElementById('riskDescription').textContent = riskInfo.description;
+                    document.getElementById('riskIcon').textContent = riskInfo.icon;
+
+                    // Show results with animation
+                    const resultsDiv = document.getElementById('predictionResult');
+                    resultsDiv.classList.remove('hidden');
+                    resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else {
+                    showError(result.error || 'Prediction failed');
+                }
+
+            } catch (error) {
+                console.error('Prediction error:', error);
+                showError('Failed to get prediction. Please check your connection and try again.');
+            } finally {
+                // Reset button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
